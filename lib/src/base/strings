@@ -1,0 +1,18 @@
+class StringsFa {
+    static const farvardin = 'فروردین';
+    static const ordibehesht = 'اردیبهشت';
+    static const khordad = 'خرداد';
+    static const tir = 'تیر';
+    static const mordad = 'مرداد';
+    static const shahrivar = 'شهریور';
+    static const mehr = 'مهر';
+    static const aban = 'آبان';
+    static const azar = 'آذر';
+    static const dey = 'دی';
+    static const bahman = 'بهمن';
+    static const esfand = 'اسفند';
+}
+
+class StringsEn {
+
+}
