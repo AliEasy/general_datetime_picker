@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:general_datetime_picker/src/models/base_date.dart';
-import 'package:general_datetime_picker/src/models/shamsi_date.dart';
+import 'package:general_datetime_picker/src/models/date/base_date.dart';
+import 'package:general_datetime_picker/src/models/date/gregorian_date.dart';
+import 'package:general_datetime_picker/src/models/configuration.dart';
+import 'package:general_datetime_picker/src/models/date/jalali_date.dart';
 import 'package:general_datetime_picker/src/shared_widgets/vertical_selector.dart';
 
 class VerticalDatePicker extends StatefulWidget {
@@ -10,7 +12,11 @@ class VerticalDatePicker extends StatefulWidget {
   final bool showMonthName;
 
   const VerticalDatePicker(
-      {super.key, this.minYear, this.maxYear, this.initialDate, this.showMonthName = false});
+      {super.key,
+      this.minYear,
+      this.maxYear,
+      this.initialDate,
+      this.showMonthName = false});
 
   @override
   State<VerticalDatePicker> createState() => _VerticalDatePickerState();
@@ -21,6 +27,7 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
   late int _year;
   late int _month;
   late int _day;
+  late ConfigurationModel _configuration;
 
   @override
   void initState() {
@@ -29,7 +36,17 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
   }
 
   _initializer() {
-    dateClass = ShamsiDateModel();
+    _configuration = ConfigurationModel(dateType: 'not initialized');
+    if (_configuration.dateType == 'not initialized') {
+      _configuration = ConfigurationModel(dateType: 'Gre');
+    }
+
+    if (_configuration.dateType == 'Gre') {
+      dateClass = GregorianDateModel();
+    } else if (_configuration.dateType == 'Jal') {
+      dateClass = JalaliDateModel();
+    }
+
     String initialDate = dateClass.checkStrDate(widget.initialDate);
 
     _year = dateClass.extractIntYearFromStrDate(initialDate);
@@ -57,7 +74,9 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
         Flexible(
           flex: 1,
           child: VerticalSelectorWidget(
-            children: widget.showMonthName ? dateClass.getMonthListWithName() : dateClass.getMonthList(),
+            children: widget.showMonthName
+                ? dateClass.getMonthListWithName()
+                : dateClass.getMonthList(),
             onChangeCallBack: (value) {
               _month = value;
             },

@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
-import 'package:general_datetime_picker/src/models/base_date.dart';
-import 'package:general_datetime_picker/src/base/strings';
+import 'package:general_datetime_picker/src/base/strings.dart';
+import 'package:general_datetime_picker/src/models/date/base_date.dart';
 import 'package:shamsi_date/shamsi_date.dart';
 
-class ShamsiDateModel extends BaseDateModel {
-  ShamsiDateModel();
+class JalaliDateModel extends BaseDateModel {
+  JalaliDateModel();
 
   String _getCurrentDateStr() {
     Jalali now = Jalali.now();
@@ -50,18 +50,18 @@ class ShamsiDateModel extends BaseDateModel {
   @override
   List<Map<int, String>> getMonthListWithName() {
     return [
-      {1: StringsFa.farvardin},
-      {2: StringsFa.ordibehesht},
-      {3: StringsFa.khordad},
-      {4: StringsFa.tir},
-      {5: StringsFa.mordad},
-      {6: StringsFa.shahrivar},
-      {7: StringsFa.mehr},
-      {8: StringsFa.aban},
-      {9: StringsFa.azar},
-      {10: StringsFa.dey},
-      {11: StringsFa.bahman},
-      {12: StringsFa.esfand},
+      {1: StringsFa.labelFarvardin},
+      {2: StringsFa.labelOrdibehesht},
+      {3: StringsFa.labelKhordad},
+      {4: StringsFa.labelTir},
+      {5: StringsFa.labelMordad},
+      {6: StringsFa.labelShahrivar},
+      {7: StringsFa.labelMehr},
+      {8: StringsFa.labelAban},
+      {9: StringsFa.labelAzar},
+      {10: StringsFa.labelDey},
+      {11: StringsFa.labelBahman},
+      {12: StringsFa.labelEsfand},
     ];
   }
 

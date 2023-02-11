@@ -45,29 +45,9 @@ class VerticalSelectorWidget extends StatelessWidget {
     );
   }
 
-  // List<Widget> _childrenGenerator() {
-  //   List<Widget> childrenWidget = [];
-  //   if (children is List<Map<int, String>>) {
-  //     childrenWidget.addAll(List.generate(
-  //         children.length,
-  //         (index) => Center(
-  //               child: Text(
-  //                   '${(children as List<Map<int, String>>)[index].keys.first} / ${(children as List<Map<int, String>>)[index].values.first}'),
-  //             )));
-  //   } else {
-  //     childrenWidget.addAll(List.generate(
-  //         children.length,
-  //         (index) => Center(
-  //               child: Text(children[index].toString(),),
-  //             )));
-  //   }
-  //   return childrenWidget;
-  // }
-
   List<Widget> _childrenGenerator() {
     List<String> finalChildren = [];
     if (children is List<Map<int, String>>) {
-      //'${(children as List<Map<int, String>>)[index].keys.first} / ${(children as List<Map<int, String>>)[index].values.first}'
       finalChildren.addAll(
           [...children.map((el) => '${el.keys.first} / ${el.values.first}')]);
     } else if (children is List<int>) {

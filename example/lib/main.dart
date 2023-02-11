@@ -3,6 +3,8 @@ import 'package:general_datetime_picker/general_datetime_picker.dart';
 
 void main() {
   runApp(const MyApp());
+
+  ConfigurationModel(dateType: 'Gre');
 }
 
 class MyApp extends StatelessWidget {
