@@ -1,0 +1,4 @@
+enum DateTypeEnum {
+  gregorian,
+  jalali,
+}

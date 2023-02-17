@@ -4,7 +4,7 @@ import 'package:general_datetime_picker/general_datetime_picker.dart';
 void main() {
   runApp(const MyApp());
 
-  ConfigurationModel(dateType: 'Jal', showMonthName: false);
+  ConfigurationModel(dateType: DateTypeEnum.jalali, showMonthName: false);
 }
 
 class MyApp extends StatelessWidget {

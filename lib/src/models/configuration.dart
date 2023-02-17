@@ -1,5 +1,7 @@
+import 'package:general_datetime_picker/src/enums/date_type.dart';
+
 class ConfigurationModel {
-  late String dateType;
+  late DateTypeEnum dateType;
   int? minYear;
   int? maxYear;
   bool showMonthName;
@@ -10,7 +12,7 @@ class ConfigurationModel {
       this.dateType, this.minYear, this.maxYear, this.showMonthName);
 
   factory ConfigurationModel({
-    required String dateType,
+    required DateTypeEnum dateType,
     int? minYear,
     int? maxYear,
     bool showMonthName = false,

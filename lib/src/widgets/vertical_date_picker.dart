@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:general_datetime_picker/src/enums/date_type.dart';
 import 'package:general_datetime_picker/src/models/date/base_date.dart';
 import 'package:general_datetime_picker/src/models/date/gregorian_date.dart';
 import 'package:general_datetime_picker/src/models/configuration.dart';
@@ -10,7 +11,7 @@ class VerticalDatePicker extends StatefulWidget {
   final int? maxYear;
   final String? initialDate;
   final bool showMonthName;
-  final String? dateType;
+  final DateTypeEnum dateType;
   final int? minYearRange;
   final int? maxYearRange;
 
@@ -20,7 +21,7 @@ class VerticalDatePicker extends StatefulWidget {
       this.maxYear,
       this.initialDate,
       this.showMonthName = false,
-      this.dateType,
+      this.dateType = DateTypeEnum.gregorian,
       this.minYearRange,
       this.maxYearRange});
 
@@ -42,15 +43,11 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
   }
 
   _initializer() {
-    _configuration =
-        ConfigurationModel(dateType: widget.dateType ?? 'not initialized');
-    if (_configuration.dateType == 'not initialized') {
-      _configuration = ConfigurationModel(dateType: 'Gre');
-    }
+    _configuration = ConfigurationModel(dateType: widget.dateType);
 
-    if (_configuration.dateType == 'Gre') {
+    if (_configuration.dateType == DateTypeEnum.gregorian) {
       dateClass = GregorianDateModel();
-    } else if (_configuration.dateType == 'Jal') {
+    } else if (_configuration.dateType == DateTypeEnum.jalali) {
       dateClass = JalaliDateModel();
     }
 
