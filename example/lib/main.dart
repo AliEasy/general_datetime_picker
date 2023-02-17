@@ -4,7 +4,7 @@ import 'package:general_datetime_picker/general_datetime_picker.dart';
 void main() {
   runApp(const MyApp());
 
-  ConfigurationModel(dateType: 'Gre');
+  ConfigurationModel(dateType: 'Jal', showMonthName: false);
 }
 
 class MyApp extends StatelessWidget {
@@ -39,8 +39,15 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: const Center(
-        child: VerticalDatePicker(showMonthName: true),
+      body: Center(
+        child: Column(
+          children: const [
+            VerticalDatePicker(
+              showMonthName: true,
+            ),
+            VerticalDatePicker(),
+          ],
+        ),
       ),
     );
   }

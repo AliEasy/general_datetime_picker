@@ -17,6 +17,11 @@ class JalaliDateModel extends BaseDateModel {
     return "${formatter.yyyy}/${formatter.mm}/${formatter.dd}";
   }
 
+  int _getCurrentYear() {
+    Jalali now = Jalali.now();
+    return now.year;
+  }
+
   @override
   List<int> getDaysList(int month, int year) {
     int start = 1;
@@ -66,12 +71,26 @@ class JalaliDateModel extends BaseDateModel {
   }
 
   @override
-  List<int> getYearList(int? minYear, int? maxYear) {
-    minYear ??= 1395;
-    maxYear ??= 1405;
+  List<int> getYearList(
+      int? minYear, int? maxYear, int? minYearRange, int? maxYearRange) {
+    late int finalMinYear;
+    late int finalMaxYear;
+
+    if ((minYear ?? 0) > 0 && (maxYear ?? 0) > 0) {
+      finalMinYear = minYear!;
+      finalMaxYear = maxYear!;
+    } else if ((minYearRange ?? 0) > 0 && (maxYearRange ?? 0) > 0) {
+      int currentYear = _getCurrentYear();
+      finalMinYear = currentYear - minYearRange!;
+      finalMaxYear = currentYear + maxYearRange!;
+    } else {
+      int currentYear = _getCurrentYear();
+      finalMinYear = currentYear - 5;
+      finalMaxYear = currentYear + 5;
+    }
 
     List<int> finalList = [];
-    for (int i = minYear; i <= maxYear; i++) {
+    for (int i = finalMinYear; i <= finalMaxYear; i++) {
       finalList.add(i);
     }
 

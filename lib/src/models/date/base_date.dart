@@ -1,7 +1,8 @@
 abstract class BaseDateModel {
   BaseDateModel();
 
-  List<int> getYearList(int? minYear, int? maxYear);
+  List<int> getYearList(
+      int? minYear, int? maxYear, int? minYearRange, int? maxYearRange);
 
   List<int> getMonthList();
 

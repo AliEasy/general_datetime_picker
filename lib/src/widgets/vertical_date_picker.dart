@@ -10,13 +10,19 @@ class VerticalDatePicker extends StatefulWidget {
   final int? maxYear;
   final String? initialDate;
   final bool showMonthName;
+  final String? dateType;
+  final int? minYearRange;
+  final int? maxYearRange;
 
   const VerticalDatePicker(
       {super.key,
       this.minYear,
       this.maxYear,
       this.initialDate,
-      this.showMonthName = false});
+      this.showMonthName = false,
+      this.dateType,
+      this.minYearRange,
+      this.maxYearRange});
 
   @override
   State<VerticalDatePicker> createState() => _VerticalDatePickerState();
@@ -36,7 +42,8 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
   }
 
   _initializer() {
-    _configuration = ConfigurationModel(dateType: 'not initialized');
+    _configuration =
+        ConfigurationModel(dateType: widget.dateType ?? 'not initialized');
     if (_configuration.dateType == 'not initialized') {
       _configuration = ConfigurationModel(dateType: 'Gre');
     }
@@ -61,7 +68,8 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
         Flexible(
           flex: 1,
           child: VerticalSelectorWidget(
-            children: dateClass.getYearList(widget.minYear, widget.maxYear),
+            children: dateClass.getYearList(widget.minYear, widget.maxYear,
+                widget.minYearRange, widget.maxYearRange),
             onChangeCallBack: (value) {
               _year = value;
             },

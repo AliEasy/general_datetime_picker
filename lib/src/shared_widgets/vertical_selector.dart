@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:general_datetime_picker/src/shared_widgets/shared_widgets.dart';
 
 class VerticalSelectorWidget extends StatelessWidget {
   final List<dynamic> children;
@@ -8,6 +9,7 @@ class VerticalSelectorWidget extends StatelessWidget {
   final Function onChangeCallBack;
   final dynamic initialValue;
   final TextStyle? textStyle;
+  final Widget? selectionOverlay;
   const VerticalSelectorWidget(
       {super.key,
       this.looping = false,
@@ -15,7 +17,7 @@ class VerticalSelectorWidget extends StatelessWidget {
       this.slightVibrate = true,
       required this.onChangeCallBack,
       this.initialValue,
-      this.textStyle})
+      this.textStyle, this.selectionOverlay})
       : assert(children.length > 0);
 
   @override
@@ -41,6 +43,7 @@ class VerticalSelectorWidget extends StatelessWidget {
         }
         onChangeCallBack(returnValue);
       },
+      selectionOverlay: selectionOverlay ?? SharedWidgets.defaultSelectionOverlayWidget(),
       children: childrenWidget,
     );
   }
