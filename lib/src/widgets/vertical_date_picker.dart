@@ -17,19 +17,21 @@ class VerticalDatePicker extends StatefulWidget {
   final TextEditingController? outputController;
   final Function(String output)? outputFunction;
   final bool? looping;
+  final TextStyle? textStyle;
 
   const VerticalDatePicker(
       {super.key,
       this.minYear,
       this.maxYear,
       this.initialDate,
-      this.showMonthName = false,
+      this.showMonthName,
       this.dateType = DateTypeEnum.gregorian,
       this.minYearRange,
       this.maxYearRange,
       this.outputController,
       this.outputFunction,
-      this.looping = false});
+      this.looping,
+      this.textStyle});
 
   @override
   State<VerticalDatePicker> createState() => _VerticalDatePickerState();
@@ -66,6 +68,7 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
     _configuration.showMonthName =
         widget.showMonthName ?? _configuration.showMonthName;
     _configuration.looping = widget.looping ?? _configuration.looping;
+    _configuration.textStyle = widget.textStyle ?? _configuration.textStyle;
   }
 
   @override
@@ -83,6 +86,7 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
             },
             initialValue: _year,
             looping: _configuration.looping,
+            textStyle: _configuration.textStyle,
           ),
         ),
         const SizedBox(
@@ -101,6 +105,7 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
             },
             initialValue: _month,
             looping: _configuration.looping,
+            textStyle: _configuration.textStyle,
           ),
         ),
         const SizedBox(
@@ -115,6 +120,8 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
               _makeOutput();
             },
             initialValue: _day,
+            looping: _configuration.looping,
+            textStyle: _configuration.textStyle,
           ),
         ),
       ],
