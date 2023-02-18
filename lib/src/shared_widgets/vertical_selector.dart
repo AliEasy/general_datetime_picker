@@ -4,8 +4,8 @@ import 'package:general_datetime_picker/src/shared_widgets/shared_widgets.dart';
 
 class VerticalSelectorWidget extends StatelessWidget {
   final List<dynamic> children;
-  final bool looping;
-  final bool slightVibrate;
+  final bool? looping;
+  final bool? slightVibrate;
   final Function onChangeCallBack;
   final dynamic initialValue;
   final TextStyle? textStyle;
@@ -17,7 +17,8 @@ class VerticalSelectorWidget extends StatelessWidget {
       this.slightVibrate = true,
       required this.onChangeCallBack,
       this.initialValue,
-      this.textStyle, this.selectionOverlay})
+      this.textStyle,
+      this.selectionOverlay})
       : assert(children.length > 0);
 
   @override
@@ -28,9 +29,9 @@ class VerticalSelectorWidget extends StatelessWidget {
       scrollController:
           FixedExtentScrollController(initialItem: _getInitialValueIndex()),
       itemExtent: 50,
-      looping: looping,
+      looping: (looping ?? false),
       onSelectedItemChanged: (value) {
-        if (slightVibrate) {
+        if ((slightVibrate ?? false)) {
           HapticFeedback.vibrate();
         }
 
@@ -43,7 +44,8 @@ class VerticalSelectorWidget extends StatelessWidget {
         }
         onChangeCallBack(returnValue);
       },
-      selectionOverlay: selectionOverlay ?? SharedWidgets.defaultSelectionOverlayWidget(),
+      selectionOverlay:
+          selectionOverlay ?? SharedWidgets.defaultSelectionOverlayWidget(),
       children: childrenWidget,
     );
   }

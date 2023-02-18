@@ -29,7 +29,7 @@ class JalaliDateModel extends BaseDateModel {
 
     if (month < 7) {
       end = 31;
-    } else if (month < 11) {
+    } else if (month < 12) {
       end = 30;
     } else {
       if (Jalali(year).isLeapYear()) {

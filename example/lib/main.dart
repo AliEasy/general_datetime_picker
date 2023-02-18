@@ -33,6 +33,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final _controller = TextEditingController();
+
+  @override
+  void initState() {
+    _controller.addListener(() {
+      debugPrint(_controller.text);
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,11 +51,21 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: Column(
-          children: const [
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
             VerticalDatePicker(
               showMonthName: true,
+              outputFunction: (output) {
+                debugPrint(output);
+              },
             ),
-            VerticalDatePicker(),
+            const SizedBox(
+              height: 50,
+            ),
+            VerticalDatePicker(
+              outputController: _controller,
+              looping: true,
+            ),
           ],
         ),
       ),
