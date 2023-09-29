@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:general_datetime_picker/src/enums/date_type.dart';
+import 'package:general_datetime_picker/src/enums/separator_type.dart';
 import 'package:general_datetime_picker/src/models/date/base_date.dart';
 import 'package:general_datetime_picker/src/models/date/gregorian_date.dart';
 import 'package:general_datetime_picker/src/models/configuration.dart';
@@ -18,6 +19,7 @@ class VerticalDatePicker extends StatefulWidget {
   final Function(String output)? outputFunction;
   final bool? looping;
   final TextStyle? textStyle;
+  final SeparatorTypeEnum? separatorType;
 
   const VerticalDatePicker(
       {super.key,
@@ -31,7 +33,8 @@ class VerticalDatePicker extends StatefulWidget {
       this.outputController,
       this.outputFunction,
       this.looping,
-      this.textStyle});
+      this.textStyle,
+      this.separatorType = SeparatorTypeEnum.slash});
 
   @override
   State<VerticalDatePicker> createState() => _VerticalDatePickerState();
@@ -51,7 +54,8 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
   }
 
   _initializer() {
-    _configuration = ConfigurationModel(dateType: widget.dateType);
+    var mainConfiguration = ConfigurationModel(dateType: widget.dateType);
+    _configuration = ConfigurationModel.clone(mainConfiguration);
 
     if (_configuration.dateType == DateTypeEnum.gregorian) {
       dateClass = GregorianDateModel();
@@ -69,6 +73,8 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
         widget.showMonthName ?? _configuration.showMonthName;
     _configuration.looping = widget.looping ?? _configuration.looping;
     _configuration.textStyle = widget.textStyle ?? _configuration.textStyle;
+    _configuration.separatorType =
+        widget.separatorType ?? _configuration.separatorType;
   }
 
   @override
@@ -128,14 +134,14 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
     );
   }
 
-  _makeOutput() {
+  void _makeOutput() {
     late String separator;
-    if (_configuration.dateType == DateTypeEnum.gregorian) {
+    if (_configuration.separatorType == SeparatorTypeEnum.dash) {
       separator = '-';
-    } else if (_configuration.dateType == DateTypeEnum.jalali) {
+    } else if (_configuration.separatorType == SeparatorTypeEnum.slash) {
       separator = '/';
     }
-    String output = '$_year$separator$_month$separator$_day$separator';
+    String output = '$_year$separator$_month$separator$_day';
 
     if (widget.outputController != null) {
       widget.outputController!.text = output;

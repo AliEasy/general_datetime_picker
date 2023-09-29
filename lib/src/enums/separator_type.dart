@@ -1,0 +1,4 @@
+enum SeparatorTypeEnum{
+  dash,
+  slash
+}
