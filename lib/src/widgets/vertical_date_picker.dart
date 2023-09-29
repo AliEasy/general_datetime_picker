@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:general_datetime_picker/src/enums/date_type.dart';
+import 'package:general_datetime_picker/src/enums/month_viewer_type.dart';
 import 'package:general_datetime_picker/src/enums/separator_type.dart';
 import 'package:general_datetime_picker/src/models/date/base_date.dart';
 import 'package:general_datetime_picker/src/models/date/gregorian_date.dart';
@@ -11,7 +12,6 @@ class VerticalDatePicker extends StatefulWidget {
   final int? minYear;
   final int? maxYear;
   final String? initialDate;
-  final bool? showMonthName;
   final DateTypeEnum dateType;
   final int? minYearRange;
   final int? maxYearRange;
@@ -20,13 +20,13 @@ class VerticalDatePicker extends StatefulWidget {
   final bool? looping;
   final TextStyle? textStyle;
   final SeparatorTypeEnum? separatorType;
+  final MonthViewTypeEnum? monthViewType;
 
   const VerticalDatePicker(
       {super.key,
       this.minYear,
       this.maxYear,
       this.initialDate,
-      this.showMonthName,
       this.dateType = DateTypeEnum.gregorian,
       this.minYearRange,
       this.maxYearRange,
@@ -34,47 +34,99 @@ class VerticalDatePicker extends StatefulWidget {
       this.outputFunction,
       this.looping,
       this.textStyle,
-      this.separatorType = SeparatorTypeEnum.slash});
+      this.separatorType = SeparatorTypeEnum.slash,
+      this.monthViewType = MonthViewTypeEnum.name});
 
   @override
   State<VerticalDatePicker> createState() => _VerticalDatePickerState();
 }
 
 class _VerticalDatePickerState extends State<VerticalDatePicker> {
-  late BaseDateModel dateClass;
-  late int _year;
-  late int _month;
-  late int _day;
+  late BaseDateModel _dateClass;
   late ConfigurationModel _configuration;
+  late int _selectedYear;
+  late int _selectedMonth;
+  late int _selectedDay;
+  late List<Map<int, String>> _yearList;
+  late List<Map<int, String>> _monthList;
+  late List<Map<int, String>> _dayList;
 
   @override
   void initState() {
-    _initializer();
+    _initializeWidget();
     super.initState();
   }
 
-  _initializer() {
+  void _initializeWidget() {
+    _initializeConfiguration();
+    _initializeSelectedDate();
+    _initializeYearSelector();
+    _initializeMonthSelector();
+    _initializeDaySelector();
+  }
+
+  void _initializeConfiguration() {
     var mainConfiguration = ConfigurationModel(dateType: widget.dateType);
     _configuration = ConfigurationModel.clone(mainConfiguration);
 
-    if (_configuration.dateType == DateTypeEnum.gregorian) {
-      dateClass = GregorianDateModel();
-    } else if (_configuration.dateType == DateTypeEnum.jalali) {
-      dateClass = JalaliDateModel();
-    }
-
-    String initialDate = dateClass.checkStrDate(widget.initialDate);
-
-    _year = dateClass.extractIntYearFromStrDate(initialDate);
-    _month = dateClass.extractIntMonthFromStrDate(initialDate);
-    _day = dateClass.extractIntDayFromStrDate(initialDate);
-
-    _configuration.showMonthName =
-        widget.showMonthName ?? _configuration.showMonthName;
     _configuration.looping = widget.looping ?? _configuration.looping;
     _configuration.textStyle = widget.textStyle ?? _configuration.textStyle;
     _configuration.separatorType =
         widget.separatorType ?? _configuration.separatorType;
+    _configuration.monthViewType =
+        widget.monthViewType ?? _configuration.monthViewType;
+  }
+
+  void _initializeSelectedDate() {
+    if (_configuration.dateType == DateTypeEnum.gregorian) {
+      _dateClass = GregorianDateModel();
+    } else if (_configuration.dateType == DateTypeEnum.jalali) {
+      _dateClass = JalaliDateModel();
+    }
+
+    String initialDate = _dateClass.checkStrDate(widget.initialDate);
+
+    _selectedYear = _dateClass.extractIntYearFromStrDate(initialDate);
+    _selectedMonth = _dateClass.extractIntMonthFromStrDate(initialDate);
+    _selectedDay = _dateClass.extractIntDayFromStrDate(initialDate);
+  }
+
+  void _initializeYearSelector() {
+    var yearList = _dateClass.getYearList(widget.minYear, widget.maxYear,
+        widget.minYearRange, widget.maxYearRange);
+
+    _yearList = yearList.map((intElement) {
+      return {intElement: intElement.toString()};
+    }).toList();
+  }
+
+  void _initializeMonthSelector() {
+    var monthList = _dateClass.getMonthListWithName();
+
+    if (widget.monthViewType == MonthViewTypeEnum.name) {
+      _monthList = monthList.map((element) {
+        return {element.keys.first: element.values.first};
+      }).toList();
+    } else if (widget.monthViewType == MonthViewTypeEnum.number) {
+      _monthList = monthList.map((element) {
+        return {element.keys.first: element.keys.first.toString()};
+      }).toList();
+    } else if (widget.monthViewType ==
+        MonthViewTypeEnum.numberWithName) {
+      _monthList = monthList.map((element) {
+        return {
+          element.keys.first: '${element.keys.first} / ${element.values.first}'
+        };
+      }).toList();
+    }
+  }
+
+  void _initializeDaySelector() {
+    var dayList = _dateClass.getDaysList(_selectedMonth, _selectedYear);
+
+    _dayList = dayList.map((intElement) {
+      return {intElement: intElement.toString()};
+    }).toList();
   }
 
   @override
@@ -84,13 +136,12 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
         Flexible(
           flex: 1,
           child: VerticalSelectorWidget(
-            children: dateClass.getYearList(widget.minYear, widget.maxYear,
-                widget.minYearRange, widget.maxYearRange),
+            children: _yearList,
             onChangeCallBack: (value) {
-              _year = value;
+              _selectedYear = value;
               _makeOutput();
             },
-            initialValue: _year,
+            initialValue: _selectedYear,
             looping: _configuration.looping,
             textStyle: _configuration.textStyle,
           ),
@@ -101,15 +152,13 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
         Flexible(
           flex: 1,
           child: VerticalSelectorWidget(
-            children: (_configuration.showMonthName ?? false)
-                ? dateClass.getMonthListWithName()
-                : dateClass.getMonthList(),
+            children: _monthList,
             onChangeCallBack: (value) {
-              _month = value;
+              _selectedMonth = value;
               _makeOutput();
               setState(() {});
             },
-            initialValue: _month,
+            initialValue: _selectedMonth,
             looping: _configuration.looping,
             textStyle: _configuration.textStyle,
           ),
@@ -120,12 +169,12 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
         Flexible(
           flex: 1,
           child: VerticalSelectorWidget(
-            children: dateClass.getDaysList(_month, _year),
+            children: _dayList,
             onChangeCallBack: (value) {
-              _day = value;
+              _selectedDay = value;
               _makeOutput();
             },
-            initialValue: _day,
+            initialValue: _selectedDay,
             looping: _configuration.looping,
             textStyle: _configuration.textStyle,
           ),
@@ -141,7 +190,8 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
     } else if (_configuration.separatorType == SeparatorTypeEnum.slash) {
       separator = '/';
     }
-    String output = '$_year$separator$_month$separator$_day';
+    String output =
+        '$_selectedYear$separator$_selectedMonth$separator$_selectedDay';
 
     if (widget.outputController != null) {
       widget.outputController!.text = output;

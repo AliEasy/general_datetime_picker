@@ -5,10 +5,9 @@ void main() {
   runApp(const MyApp());
 
   ConfigurationModel(
-    dateType: DateTypeEnum.jalali,
-    showMonthName: false,
-    separatorType: SeparatorTypeEnum.slash,
-  );
+      dateType: DateTypeEnum.jalali,
+      separatorType: SeparatorTypeEnum.slash,
+      monthViewType: MonthViewTypeEnum.name);
 }
 
 class MyApp extends StatelessWidget {
@@ -58,7 +57,6 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             VerticalDatePicker(
-              showMonthName: true,
               outputFunction: (output) {
                 debugPrint(output);
               },
@@ -69,8 +67,8 @@ class _MyHomePageState extends State<MyHomePage> {
             VerticalDatePicker(
               outputController: _controller,
               looping: true,
-              showMonthName: false,
               separatorType: SeparatorTypeEnum.dash,
+              monthViewType: MonthViewTypeEnum.numberWithName,
             ),
           ],
         ),

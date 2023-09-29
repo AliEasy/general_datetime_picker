@@ -170,4 +170,22 @@ class GregorianDateModel extends BaseDateModel {
 
     return finalList;
   }
+  
+  @override
+  List<String> getMonthNameList() {
+    return [
+      StringsEn.labelJanuary,
+      StringsEn.labelFebruary,
+      StringsEn.labelMarch,
+      StringsEn.labelApril,
+      StringsEn.labelMay,
+      StringsEn.labelJune,
+      StringsEn.labelJuly,
+      StringsEn.labelAugust,
+      StringsEn.labelSeptember,
+      StringsEn.labelOctober,
+      StringsEn.labelNovember,
+      StringsEn.labelDecember,
+    ];
+  }
 }

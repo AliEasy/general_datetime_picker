@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:general_datetime_picker/src/shared_widgets/shared_widgets.dart';
 
 class VerticalSelectorWidget extends StatelessWidget {
-  final List<dynamic> children;
+  final List<Map<int, String>> children;
   final bool? looping;
   final bool? slightVibrate;
   final Function onChangeCallBack;
@@ -36,12 +36,8 @@ class VerticalSelectorWidget extends StatelessWidget {
         }
 
         int returnValue = 0;
-        if (children is List<Map<int, String>>) {
-          Map<int, String> selected = children.elementAt(value);
-          returnValue = selected.keys.first;
-        } else {
-          returnValue = children.elementAt(value);
-        }
+        Map<int, String> selected = children.elementAt(value);
+        returnValue = selected.keys.first;
         onChangeCallBack(returnValue);
       },
       selectionOverlay:
@@ -52,12 +48,7 @@ class VerticalSelectorWidget extends StatelessWidget {
 
   List<Widget> _childrenGenerator() {
     List<String> finalChildren = [];
-    if (children is List<Map<int, String>>) {
-      finalChildren.addAll(
-          [...children.map((el) => '${el.keys.first} / ${el.values.first}')]);
-    } else if (children is List<int>) {
-      finalChildren.addAll([...children.map((el) => el.toString())]);
-    }
+    finalChildren.addAll([...children.map((el) => el.values.first)]);
 
     return List.generate(
         finalChildren.length,
@@ -72,12 +63,8 @@ class VerticalSelectorWidget extends StatelessWidget {
   int _getInitialValueIndex() {
     int finalResult = 0;
     try {
-      if (children is List<Map<int, String>>) {
-        finalResult = (children as List<Map<int, String>>)
-            .indexWhere((element) => element.keys.first == initialValue);
-      } else {
-        finalResult = children.indexOf(initialValue);
-      }
+      finalResult =
+          children.indexWhere((element) => element.keys.first == initialValue);
     } catch (e) {
       debugPrint('$e');
     }

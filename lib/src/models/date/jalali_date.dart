@@ -158,4 +158,22 @@ class JalaliDateModel extends BaseDateModel {
     var split = date.split('/');
     return int.parse(split[0]);
   }
+
+  @override
+  List<String> getMonthNameList() {
+    return [
+      StringsFa.labelFarvardin,
+      StringsFa.labelOrdibehesht,
+      StringsFa.labelKhordad,
+      StringsFa.labelTir,
+      StringsFa.labelMordad,
+      StringsFa.labelShahrivar,
+      StringsFa.labelMehr,
+      StringsFa.labelAban,
+      StringsFa.labelAzar,
+      StringsFa.labelDey,
+      StringsFa.labelBahman,
+      StringsFa.labelEsfand,
+    ]; 
+  }
 }

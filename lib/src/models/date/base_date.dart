@@ -8,6 +8,8 @@ abstract class BaseDateModel {
 
   List<Map<int, String>> getMonthListWithName();
 
+  List<String> getMonthNameList();
+
   List<int> getDaysList(int month, int year);
 
   String getCurrentDateStr();
