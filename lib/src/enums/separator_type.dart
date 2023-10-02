@@ -1,4 +1,5 @@
 enum SeparatorTypeEnum{
   dash,
-  slash
+  slash,
+  none
 }

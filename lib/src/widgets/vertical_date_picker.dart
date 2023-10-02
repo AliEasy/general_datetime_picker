@@ -111,8 +111,7 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
       _monthList = monthList.map((element) {
         return {element.keys.first: element.keys.first.toString()};
       }).toList();
-    } else if (widget.monthViewType ==
-        MonthViewTypeEnum.numberWithName) {
+    } else if (widget.monthViewType == MonthViewTypeEnum.numberWithName) {
       _monthList = monthList.map((element) {
         return {
           element.keys.first: '${element.keys.first} / ${element.values.first}'
@@ -189,6 +188,8 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
       separator = '-';
     } else if (_configuration.separatorType == SeparatorTypeEnum.slash) {
       separator = '/';
+    } else if (_configuration.separatorType == SeparatorTypeEnum.none) {
+      separator = '';
     }
     String output =
         '$_selectedYear$separator$_selectedMonth$separator$_selectedDay';
