@@ -7,6 +7,8 @@ class ConfigurationModel {
   late DateTypeEnum dateType;
   int? minYear;
   int? maxYear;
+  int? minYearRange;
+  int? maxYearRange;
   bool? looping;
   TextStyle? textStyle;
   SeparatorTypeEnum? separatorType;

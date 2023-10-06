@@ -22,20 +22,21 @@ class VerticalDatePicker extends StatefulWidget {
   final SeparatorTypeEnum? separatorType;
   final MonthViewTypeEnum? monthViewType;
 
-  const VerticalDatePicker(
-      {super.key,
-      this.minYear,
-      this.maxYear,
-      this.initialDate,
-      this.dateType = DateTypeEnum.gregorian,
-      this.minYearRange,
-      this.maxYearRange,
-      this.outputController,
-      this.outputFunction,
-      this.looping,
-      this.textStyle,
-      this.separatorType = SeparatorTypeEnum.slash,
-      this.monthViewType = MonthViewTypeEnum.name});
+  const VerticalDatePicker({
+    super.key,
+    this.minYear,
+    this.maxYear,
+    this.initialDate,
+    this.dateType = DateTypeEnum.gregorian,
+    this.minYearRange,
+    this.maxYearRange,
+    this.outputController,
+    this.outputFunction,
+    this.looping,
+    this.textStyle,
+    this.separatorType = SeparatorTypeEnum.slash,
+    this.monthViewType = MonthViewTypeEnum.name,
+  });
 
   @override
   State<VerticalDatePicker> createState() => _VerticalDatePickerState();
@@ -75,6 +76,8 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
         widget.separatorType ?? _configuration.separatorType;
     _configuration.monthViewType =
         widget.monthViewType ?? _configuration.monthViewType;
+    _configuration.minYear = widget.minYear ?? _configuration.minYear;
+    _configuration.maxYear = widget.maxYear ?? _configuration.maxYear;
   }
 
   void _initializeSelectedDate() {
@@ -92,8 +95,8 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
   }
 
   void _initializeYearSelector() {
-    var yearList = _dateClass.getYearList(widget.minYear, widget.maxYear,
-        widget.minYearRange, widget.maxYearRange);
+    var yearList = _dateClass.getYearList(_configuration.minYear, _configuration.maxYear,
+        _configuration.minYearRange, _configuration.maxYearRange);
 
     _yearList = yearList.map((intElement) {
       return {intElement: intElement.toString()};

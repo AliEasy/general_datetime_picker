@@ -7,7 +7,8 @@ void main() {
   ConfigurationModel(
       dateType: DateTypeEnum.jalali,
       separatorType: SeparatorTypeEnum.slash,
-      monthViewType: MonthViewTypeEnum.name);
+      monthViewType: MonthViewTypeEnum.name,
+      );
 }
 
 class MyApp extends StatelessWidget {
