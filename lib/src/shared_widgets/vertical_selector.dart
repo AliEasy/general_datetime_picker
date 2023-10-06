@@ -1,22 +1,19 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:general_datetime_picker/src/shared_widgets/shared_widgets.dart';
 
 class VerticalSelectorWidget extends StatelessWidget {
   final List<Map<int, String>> children;
-  final bool? looping;
-  final bool? slightVibrate;
+  final int initialValue;
   final Function onChangeCallBack;
-  final dynamic initialValue;
+  final bool? looping;
   final TextStyle? textStyle;
   final Widget? selectionOverlay;
   const VerticalSelectorWidget(
       {super.key,
-      this.looping = false,
       required this.children,
-      this.slightVibrate = true,
       required this.onChangeCallBack,
-      this.initialValue,
+      required this.initialValue,
+      this.looping = false,
       this.textStyle,
       this.selectionOverlay})
       : assert(children.length > 0);
@@ -31,10 +28,6 @@ class VerticalSelectorWidget extends StatelessWidget {
       itemExtent: 50,
       looping: (looping ?? false),
       onSelectedItemChanged: (value) {
-        if ((slightVibrate ?? false)) {
-          HapticFeedback.vibrate();
-        }
-
         int returnValue = 0;
         Map<int, String> selected = children.elementAt(value);
         returnValue = selected.keys.first;
@@ -65,8 +58,8 @@ class VerticalSelectorWidget extends StatelessWidget {
     try {
       finalResult =
           children.indexWhere((element) => element.keys.first == initialValue);
-    } catch (e) {
-      debugPrint('$e');
+    } catch (e, st) {
+      debugPrint('$e | $st');
     }
     return finalResult;
   }
