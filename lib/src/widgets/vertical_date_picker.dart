@@ -12,7 +12,7 @@ class VerticalDatePicker extends StatefulWidget {
   final int? minYear;
   final int? maxYear;
   final String? initialDate;
-  final DateTypeEnum dateType;
+  final DateTypeEnum? dateType;
   final int? minYearRange;
   final int? maxYearRange;
   final TextEditingController? outputController;
@@ -27,7 +27,7 @@ class VerticalDatePicker extends StatefulWidget {
     this.minYear,
     this.maxYear,
     this.initialDate,
-    this.dateType = DateTypeEnum.gregorian,
+    this.dateType,
     this.minYearRange,
     this.maxYearRange,
     this.outputController,
@@ -39,10 +39,10 @@ class VerticalDatePicker extends StatefulWidget {
   });
 
   @override
-  State<VerticalDatePicker> createState() => _VerticalDatePickerState();
+  State<VerticalDatePicker> createState() => VerticalDatePickerState();
 }
 
-class _VerticalDatePickerState extends State<VerticalDatePicker> {
+class VerticalDatePickerState extends State<VerticalDatePicker> {
   late BaseDateModel _dateClass;
   late ConfigurationModel _configuration;
   late int _selectedYear;
@@ -51,6 +51,9 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
   late List<Map<int, String>> _yearList;
   late List<Map<int, String>> _monthList;
   late List<Map<int, String>> _dayList;
+  final _yearKey = GlobalKey<VerticalSelectorWidgetState>();
+  final _monthKey = GlobalKey<VerticalSelectorWidgetState>();
+  final _dayKey = GlobalKey<VerticalSelectorWidgetState>();
 
   @override
   void initState() {
@@ -67,9 +70,11 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
   }
 
   void _initializeConfiguration() {
-    var mainConfiguration = ConfigurationModel(dateType: widget.dateType);
+    var mainConfiguration =
+        ConfigurationModel(dateType: widget.dateType ?? DateTypeEnum.gregorian);
     _configuration = ConfigurationModel.clone(mainConfiguration);
 
+    _configuration.dateType = widget.dateType ?? _configuration.dateType;
     _configuration.looping = widget.looping ?? _configuration.looping;
     _configuration.textStyle = widget.textStyle ?? _configuration.textStyle;
     _configuration.separatorType =
@@ -95,8 +100,11 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
   }
 
   void _initializeYearSelector() {
-    var yearList = _dateClass.getYearList(_configuration.minYear, _configuration.maxYear,
-        _configuration.minYearRange, _configuration.maxYearRange);
+    var yearList = _dateClass.getYearList(
+        _configuration.minYear,
+        _configuration.maxYear,
+        _configuration.minYearRange,
+        _configuration.maxYearRange);
 
     _yearList = yearList.map((intElement) {
       return {intElement: intElement.toString()};
@@ -138,6 +146,7 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
         Flexible(
           flex: 1,
           child: VerticalSelectorWidget(
+            key: _yearKey,
             children: _yearList,
             onChangeCallBack: (value) {
               _selectedYear = value;
@@ -154,6 +163,7 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
         Flexible(
           flex: 1,
           child: VerticalSelectorWidget(
+            key: _monthKey,
             children: _monthList,
             onChangeCallBack: (value) {
               _selectedMonth = value;
@@ -171,6 +181,7 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
         Flexible(
           flex: 1,
           child: VerticalSelectorWidget(
+            key: _dayKey,
             children: _dayList,
             onChangeCallBack: (value) {
               _selectedDay = value;
@@ -203,5 +214,29 @@ class _VerticalDatePickerState extends State<VerticalDatePicker> {
     if (widget.outputFunction != null) {
       widget.outputFunction!(output);
     }
+  }
+
+  void goToCurrentDate() {
+    String initialDate = _dateClass.checkStrDate(null);
+
+    int selectedYear = _dateClass.extractIntYearFromStrDate(initialDate);
+    int selectedMonth = _dateClass.extractIntMonthFromStrDate(initialDate);
+    int selectedDay = _dateClass.extractIntDayFromStrDate(initialDate);
+
+    _yearKey.currentState?.scrollToChild(selectedYear);
+    _monthKey.currentState?.scrollToChild(selectedMonth);
+    _dayKey.currentState?.scrollToChild(selectedDay);
+  }
+
+  void goToInitialDate() {
+    String initialDate = _dateClass.checkStrDate(widget.initialDate);
+
+    int selectedYear = _dateClass.extractIntYearFromStrDate(initialDate);
+    int selectedMonth = _dateClass.extractIntMonthFromStrDate(initialDate);
+    int selectedDay = _dateClass.extractIntDayFromStrDate(initialDate);
+
+    _yearKey.currentState?.scrollToChild(selectedYear);
+    _monthKey.currentState?.scrollToChild(selectedMonth);
+    _dayKey.currentState?.scrollToChild(selectedDay);
   }
 }

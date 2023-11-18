@@ -5,10 +5,10 @@ void main() {
   runApp(const MyApp());
 
   ConfigurationModel(
-      dateType: DateTypeEnum.jalali,
-      separatorType: SeparatorTypeEnum.slash,
-      monthViewType: MonthViewTypeEnum.name,
-      );
+    dateType: DateTypeEnum.jalali,
+    separatorType: SeparatorTypeEnum.slash,
+    monthViewType: MonthViewTypeEnum.name,
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -38,6 +38,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final _controller = TextEditingController();
+  final _key = GlobalKey<VerticalDatePickerState>();
+  final _key1 = GlobalKey<VerticalDatePickerState>();
 
   @override
   void initState() {
@@ -57,20 +59,48 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            VerticalDatePicker(
-              outputFunction: (output) {
-                debugPrint(output);
-              },
-            ),
-            const SizedBox(
-              height: 50,
-            ),
-            VerticalDatePicker(
+            // VerticalDatePicker(
+            //   outputFunction: (output) {
+            //     debugPrint(output);
+            //   },
+            // ),
+            // const SizedBox(
+            //   height: 50,
+            // ),
+            // VerticalDatePicker(
+            //   key: _key,
+            //   outputController: _controller,
+            //   looping: true,
+            //   separatorType: SeparatorTypeEnum.dash,
+            //   monthViewType: MonthViewTypeEnum.numberWithName,
+            // ),
+            // const SizedBox(
+            //   height: 50,
+            // ),
+             VerticalDatePicker(
+              key: _key1,
               outputController: _controller,
               looping: true,
               separatorType: SeparatorTypeEnum.dash,
               monthViewType: MonthViewTypeEnum.numberWithName,
+              dateType: DateTypeEnum.gregorian,
+              initialDate: '2023-11-16',
             ),
+            const SizedBox(
+              height: 50,
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  _key.currentState?.goToCurrentDate();
+                  _key1.currentState?.goToCurrentDate();
+                },
+                child: Text('CurrentDate')),
+                ElevatedButton(
+                onPressed: () {
+                  _key.currentState?.goToInitialDate();
+                  _key1.currentState?.goToInitialDate();
+                },
+                child: Text('InitialDate')),
           ],
         ),
       ),
