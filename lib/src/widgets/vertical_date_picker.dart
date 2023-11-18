@@ -34,8 +34,8 @@ class VerticalDatePicker extends StatefulWidget {
     this.outputFunction,
     this.looping,
     this.textStyle,
-    this.separatorType = SeparatorTypeEnum.slash,
-    this.monthViewType = MonthViewTypeEnum.name,
+    this.separatorType,
+    this.monthViewType,
   });
 
   @override
@@ -70,8 +70,10 @@ class VerticalDatePickerState extends State<VerticalDatePicker> {
   }
 
   void _initializeConfiguration() {
-    var mainConfiguration =
-        ConfigurationModel(dateType: widget.dateType ?? DateTypeEnum.gregorian);
+    var mainConfiguration = ConfigurationModel(
+        dateType: DateTypeEnum.gregorian,
+        separatorType: SeparatorTypeEnum.dash,
+        monthViewType: MonthViewTypeEnum.name);
     _configuration = ConfigurationModel.clone(mainConfiguration);
 
     _configuration.dateType = widget.dateType ?? _configuration.dateType;
